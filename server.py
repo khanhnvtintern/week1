@@ -2,7 +2,7 @@ import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 HOST = "localhost"
-PORT = 8000
+PORT = 8001
 
 
 class Handler(BaseHTTPRequestHandler):
