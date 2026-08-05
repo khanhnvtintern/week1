@@ -17,4 +17,5 @@ client
 ->300 : redirection (url1 -> url2)
 ->500 : server error (internal, gateway, http version)
 
-pip install "sqlalchemy>=2.0.0"
+pip install "sqlalchemy>=2.0.0" 
+pip install "sqladmin>=0.20.0"
