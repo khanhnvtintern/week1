@@ -1,51 +1,69 @@
-from fastapi import FastAPI
-from fastapi import HTTPException
+from fastapi import FastAPI, Depends, HTTPException
 from pydantic import BaseModel
+from sqlalchemy.orm import Session
+
+from app.database import get_db, Base, engine 
+from app.models import Book
+
+
 
 app = FastAPI(title="booksAPI")
+Base.metadata.create_all(bind=engine) 
 
-class Book(BaseModel):
+class BookCreate(BaseModel):
     title: str
     author : str
     year : int
-books: dict[int, Book] = {}
+#books: dict[int, Book] = {}
 
 @app.get("/")
 def read_root():
     return {"message": "Hello World"}
 
 @app.get("/books")
-def read_books():
-    #TODO: trả về danh sách từ dict books
-    return list(books.values())
+def read_books(db : Session = Depends(get_db)):
+    ## TODO: return db.query(Book).all()
+    return db.query(Book).all()
 
 @app.get("/books/{book_id}")
-def read_book(book_id: int):
-    # TODO: nếu không có book_id → raise HTTPException(status_code=404, detail="Book not found")
-    # TODO: nếu có → trả về book (có thể kèm id)
-    if book_id not in books:
+def read_book(book_id: int, db : Session = Depends(get_db)):
+    # TODO: book = db.get(Book, book_id)
+    # TODO: nếu book is None → raise HTTPException(status_code=404, detail="Book not found")
+    # TODO: return book
+    book = db.get(Book, book_id)
+    if book is None:
         raise HTTPException(status_code=404, detail="Book not found")
-    return books[book_id]
+    return book
 
 @app.post("/books",status_code=201)
-def create_book(book: Book):
-    # TODO: tạo book_id, gán books[book_id] = book, trả về kết quả
-    book_id = max(books) + 1 if books else 1
-    books[book_id] = book
-    return books[book_id]
+def create_book(payload: BookCreate, db: Session = Depends(get_db)):
+    # TODO: tạo Book(...), db.add, db.commit, db.refresh, return book
+    new_book = Book(title = payload.title, author = payload.author, year = payload.year)
+    db.add(new_book)
+    db.commit()
+    db.refresh(new_book)
+    return new_book
 
 @app.put("/books/{book_id}")
-def update_book(book_id: int, book: Book):
-    # TODO: kiểm tra book_id tồn tại; cập nhật books[book_id] = book
-    if book_id not in books:
-        raise HTTPException(status_code=404,detail="book not found")
-    books[book_id] = book
-    return books[book_id]
+def update_book(book_id: int, payload: BookCreate, db: Session = Depends(get_db)):
+    # TODO: lấy book theo id; không có → 404
+    # TODO: gán title/author/year từ payload; commit; refresh; return
+    book = db.get(Book, book_id)
+    if book is None:
+        raise HTTPException(status_code=404, detail="Book not found")
+    book.title = payload.title
+    book.author = payload.author
+    book.year = payload.year
+    db.commit()
+    db.refresh(book)
+    return book
 
 @app.delete("/books/{book_id}", status_code=204)
-def delete_book(book_id: int):
-    # TODO: kiểm tra book_id tồn tại; xóa khỏi books; return None
-    if book_id not in books:
+def delete_book(book_id: int, db: Session = Depends(get_db)):
+    # TODO: lấy book; không có → 404; db.delete; commit; return None
+    book = db.get(Book, book_id)
+    if book is None:
         raise HTTPException(status_code=404, detail="Book not found")
-    del books[book_id]
+    db.delete(book)
+    db.commit()
     return None

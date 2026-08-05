@@ -1,0 +1,20 @@
+status code
+200 ok
+201 created -> create
+202 accepted -> req (async)
+204 no content -> delete
+
+client
+400 -> bad req (sai cu phap)
+401 -> unauthorized 
+403 -> forbidden (admin)
+404 -> not found (id,..)
+405 ->method not allow (def not supported)
+409 -> conflict (version...)
+429 -> many req (rate limit)
+
+->100 : information
+->300 : redirection (url1 -> url2)
+->500 : server error (internal, gateway, http version)
+
+pip install "sqlalchemy>=2.0.0"
