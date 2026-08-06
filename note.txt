@@ -27,3 +27,4 @@ alembic revision --autogenerate -m "baseline"
 -> versions -> def upgrade() trống vì  thể 
 alembic stamp head -> để thay đổi so với alembic current 
 alembic revision --autogenerate -m "add book summary"
+alembic revision --autogenerate -m "add authors and book.author_id"

@@ -1,5 +1,5 @@
 from app.database import DB_URL, Base, engine
-from app.models import Book  # noqa: F401  # cần import để metadata biết bảng books
+from app.models import Book,Author  # noqa: F401  # cần import để metadata biết bảng books
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
