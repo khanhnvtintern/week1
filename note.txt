@@ -17,5 +17,13 @@ client
 ->300 : redirection (url1 -> url2)
 ->500 : server error (internal, gateway, http version)
 
-pip install "sqlalchemy>=2.0.0" 
-pip install "sqladmin>=0.20.0"
+pip install "sqlalchemy>=2.0.0"  -> db
+pip install "sqladmin>=0.20.0" -> db admin
+pip install "alembic>=1.14.0" --> cập nhật db 
+alembic init alembic
+điều chỉnh alembic-> env.py 
+chạy lệnh sinh migration đầu tiên 
+alembic revision --autogenerate -m "baseline"
+-> versions -> def upgrade() trống vì  thể 
+alembic stamp head -> để thay đổi so với alembic current 
+alembic revision --autogenerate -m "add book summary"

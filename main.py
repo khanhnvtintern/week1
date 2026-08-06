@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from app.database import get_db, Base, engine 
+from app.database import get_db, Base, engine, DB_URL
 from app.models import Book
 
 from app.admin import setup_admin
@@ -16,6 +16,7 @@ class BookCreate(BaseModel):
     title: str
     author : str
     year : int
+    summary : str | None = None
 #books: dict[int, Book] = {}
 
 @app.get("/")
@@ -40,7 +41,7 @@ def read_book(book_id: int, db : Session = Depends(get_db)):
 @app.post("/books",status_code=201)
 def create_book(payload: BookCreate, db: Session = Depends(get_db)):
     # TODO: tạo Book(...), db.add, db.commit, db.refresh, return book
-    new_book = Book(title = payload.title, author = payload.author, year = payload.year)
+    new_book = Book(title = payload.title, author = payload.author, year = payload.year, summary = payload.summary)
     db.add(new_book)
     db.commit()
     db.refresh(new_book)
@@ -56,6 +57,7 @@ def update_book(book_id: int, payload: BookCreate, db: Session = Depends(get_db)
     book.title = payload.title
     book.author = payload.author
     book.year = payload.year
+    book.summary = payload.summary
     db.commit()
     db.refresh(book)
     return book
