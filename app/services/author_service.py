@@ -3,7 +3,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models import Author
-from app.schemas.author import AuthorCreate, AuthorUpdate
+from app.schemas.author import AuthorCreate, AuthorUpdate,AuthorRead
 
 
 def list_authors(db: Session) -> list[Author]:

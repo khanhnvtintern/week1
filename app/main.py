@@ -1,11 +1,11 @@
 from fastapi import FastAPI
 
 from app.admin import setup_admin
-from app.api.routers import authors
+from app.api.routers import authors, books
 from app.core.config import get_settings
 from app.db.database import Base
 from app.db.session import engine
-from app.models import Author  # noqa: F401
+from app.models import Author, Book
 
 settings = get_settings()
 app = FastAPI(title=settings.app_title)
@@ -14,7 +14,7 @@ Base.metadata.create_all(bind=engine)
 setup_admin(app, engine)
 
 app.include_router(authors.router, prefix="/api/v1")
-
+app.include_router(books.router, prefix="/api/v1")
 
 @app.get("/")
 def root() -> dict[str, str]:

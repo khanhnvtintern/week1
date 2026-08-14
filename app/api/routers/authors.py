@@ -5,6 +5,7 @@ from app.db.session import get_db
 from app.schemas.author import AuthorCreate, AuthorRead, AuthorUpdate
 from app.services import author_service
 
+
 router = APIRouter(prefix="/authors", tags=["authors"])
 
 
