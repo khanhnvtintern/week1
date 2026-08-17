@@ -12,5 +12,7 @@ class Book(Base):
     year: Mapped[int] = mapped_column(Integer, nullable=False)
     summary: Mapped[str | None] = mapped_column(String(500), nullable=True)
     author_id: Mapped[int | None] = mapped_column(ForeignKey("authors.id"), nullable=True)
+    category_id: Mapped[int | None] = mapped_column(ForeignKey("categories.id"),nullable=True)
 
     author: Mapped["Author | None"] = relationship("Author", back_populates="books")
+    category: Mapped["Category | None"] = relationship("Category", back_populates="books") 
