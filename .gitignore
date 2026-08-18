@@ -8,8 +8,6 @@ data/*.db
 .pytest_cache/
 .ruff_cache/
 
-# file test tay, khong day len git
-requests.http
 requests-week1.http
-
-README.md
+requests.http
+test_books.http
