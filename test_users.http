@@ -1,0 +1,70 @@
+@host = http://127.0.0.1:8000/api/v1
+
+### 201 - tao user thuong
+POST {{host}}/users
+Content-Type: application/json
+
+{ "username": "minh", "password": "secret123", "role": 1 }
+
+### 201 - tao admin
+POST {{host}}/users
+Content-Type: application/json
+
+{ "username": "admin", "password": "secret123", "role": 0 }
+
+### 201 - thieu role -> mac dinh 1
+POST {{host}}/users
+Content-Type: application/json
+
+{ "username": "lan", "password": "secret123" }
+
+### 409 - username trung
+POST {{host}}/users
+Content-Type: application/json
+
+{ "username": "minh", "password": "secret123", "role": 1 }
+
+### 422 - password qua ngan
+POST {{host}}/users
+Content-Type: application/json
+
+{ "username": "ngan", "password": "123", "role": 1 }
+
+### 422 - role khong phai so
+POST {{host}}/users
+Content-Type: application/json
+
+{ "username": "sai", "password": "secret123", "role": "admin" }
+
+### 200 - danh sach user
+GET {{host}}/users
+
+### 200 - chi tiet user
+GET {{host}}/users/1
+
+### 404 - user khong ton tai
+GET {{host}}/users/9999
+
+### 200 - PUT khong gui password (giu pass cu)
+PUT {{host}}/users/1
+Content-Type: application/json
+
+{ "username": "minh2", "role": 1 }
+
+### 409 - PUT username trung user khac
+PUT {{host}}/users/1
+Content-Type: application/json
+
+{ "username": "admin", "role": 1 }
+
+### 200 - PUT doi password
+PUT {{host}}/users/1
+Content-Type: application/json
+
+{ "username": "minh2", "password": "newsecret123", "role": 0 }
+
+### 204 - xoa user
+DELETE {{host}}/users/3
+
+### 404 - xoa lai user vua xoa
+DELETE {{host}}/users/3

@@ -1,3 +1,3 @@
 from app.models.book import Book
-
-__all__ = ["Book"]
+from app.models.user import User
+__all__ = ["Book", "User"]
