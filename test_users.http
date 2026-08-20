@@ -68,3 +68,41 @@ DELETE {{host}}/users/3
 
 ### 404 - xoa lai user vua xoa
 DELETE {{host}}/users/3
+
+########## BAI 3 - LOGIN JWT ##########
+
+### 200 - login dung -> co access_token, token_type "bearer"
+# @name login
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{ "username": "lan", "password": "secret123" }
+
+### 401 - sai password
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{ "username": "lan", "password": "saipass123" }
+
+### 401 - username khong ton tai (message y het cai tren)
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{ "username": "khongcotaikhoannay", "password": "secret123" }
+
+### 401 - login bang pass cu sau khi da doi pass
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{ "username": "minh2", "password": "secret123" }
+
+### 200 - login admin (dung cho bai 4)
+# @name loginAdmin
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{ "username": "admin", "password": "secret123" }
+
+### dung token vua lay o request "login" o tren
+GET {{host}}/users
+Authorization: Bearer {{login.response.body.access_token}}

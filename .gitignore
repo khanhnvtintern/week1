@@ -12,3 +12,4 @@ requests-week1.http
 requests.http
 books.http
 test_books.http
+test_users.http
