@@ -13,3 +13,4 @@ requests.http
 books.http
 test_books.http
 test_users.http
+test_auth_books.http
